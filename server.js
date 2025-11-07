@@ -19,6 +19,10 @@ app.use(
 );
 app.use(express.json());
 app.use(bodyParser.json());
+// ✅ Health Check Route
+app.get("/health", (req, res) => {
+  res.json({ ok: true, message: "Backend is running ✅" });
+});
 
 // ✅ Stripe Checkout
 app.post("/create-checkout-session", async (req, res) => {
@@ -87,5 +91,6 @@ app.get("/stripe-health", async (req, res) => {
   }
 });
 app.listen(PORT, () => console.log(`✅ VetChat backend running on port ${PORT}`));
+
 
 
