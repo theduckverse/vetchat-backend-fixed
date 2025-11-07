@@ -44,11 +44,22 @@ app.post("/create-checkout-session", async (req, res) => {
   }
 });
 
-// ✅ Chat route
-app.post("/chat", async (req, res) => {
+// ✅ Root route
+app.get("/", (req, res) => {
+  res.send("✅ VetChat backend is live and ready!");
+});
+
+// ✅ Chat route (works for GET & POST)
+app.all("/chat", async (req, res) => {
   try {
+    if (req.method === "GET") {
+      return res.status(400).json({ error: "Message is required" });
+    }
+
     const { message } = req.body;
-    if (!message) return res.status(400).json({ error: "Message is required" });
+    if (!message) {
+      return res.status(400).json({ error: "Message is required" });
+    }
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -62,6 +73,7 @@ app.post("/chat", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 const PORT = process.env.PORT || 10000;
 app.listen(PORT, () => console.log(`✅ VetChat backend running on port ${PORT}`));
