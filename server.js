@@ -13,7 +13,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 app.use(
   cors({
-    origin: ["https://vetchat.net", "https://vetchat-backend-1.onrender.com"],
+    origin: "*",
     methods: ["GET", "POST"],
   })
 );
@@ -87,4 +87,5 @@ app.get("/stripe-health", async (req, res) => {
   }
 });
 app.listen(PORT, () => console.log(`✅ VetChat backend running on port ${PORT}`));
+
 
