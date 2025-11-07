@@ -76,4 +76,15 @@ app.all("/chat", async (req, res) => {
 
 
 const PORT = process.env.PORT || 10000;
+// ✅ Stripe Health Check Route
+app.get("/stripe-health", async (req, res) => {
+  try {
+    const balance = await stripe.balance.retrieve();
+    res.json({ status: "ok", connected: true, message: "Stripe key is valid ✅", balance });
+  } catch (err) {
+    console.error("Stripe health check failed:", err.message);
+    res.status(500).json({ status: "error", connected: false, message: err.message });
+  }
+});
 app.listen(PORT, () => console.log(`✅ VetChat backend running on port ${PORT}`));
+
